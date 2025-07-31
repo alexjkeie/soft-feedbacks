@@ -183,7 +183,7 @@ def index():
         )
         return render_template_string(HTML_TEMPLATE, login_url=login_url)
     else:
-        # Check if user is in guild and has role
+        # Check if user is in guild
         user = session['user']
         guilds_resp = requests.get(
             "https://discord.com/api/users/@me/guilds",
@@ -193,14 +193,10 @@ def index():
             session.clear()
             return redirect("/")
         guilds = guilds_resp.json()
-        # Check guild and role membership
         in_guild = any(g['id'] == GUILD_ID for g in guilds)
         if not in_guild:
             session.clear()
             return f"You must join our server! <a href='https://discord.gg/u9NtDpXD7s'>Join here</a>"
-
-        # Here you could add role check if you have a way (Discord API requires bot for role info)
-        # For simplicity, we check guild membership only
 
         return render_template_string(HTML_TEMPLATE)
 
@@ -247,8 +243,15 @@ def submit():
     feedback = request.form.get("feedback")
     anonymous = request.form.get("anonymous")
     user = session['user']
-    username = "Anonymous" if anonymous else f"{user['username']}#{user['discriminator']}"
-    avatar = user['avatar']
+
+    # If anonymous, replace username and avatar accordingly
+    if anonymous:
+        username = "Anonymous"
+        avatar = "https://cdn.discordapp.com/embed/avatars/0.png"
+    else:
+        username = f"{user['username']}#{user['discriminator']}"
+        avatar = user['avatar']
+
     embed = {
         "embeds": [
             {
