@@ -14,208 +14,162 @@ REDIRECT_URI = os.environ.get("REDIRECT_URI")
 
 HTML_TEMPLATE = """
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Soft Feedback</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-    * {
-      box-sizing: border-box;
-    }
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #b3e5fc, #ffccff);
+      padding: 30px 15px;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #fce4ec, #e0f7fa);
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       min-height: 100vh;
-      overflow-x: hidden;
-      color: #3a3a3a;
-      animation: bgPulse 15s ease-in-out infinite;
+      color: #333;
     }
-
-    @keyframes bgPulse {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
     .container {
       background: white;
-      border-radius: 25px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-      max-width: 450px;
-      width: 90vw;
-      padding: 40px 35px 50px;
-      position: relative;
-      overflow: hidden;
+      border-radius: 24px;
+      padding: 30px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s ease-in-out;
     }
-
     h1 {
-      font-weight: 600;
-      font-size: 2.8rem;
-      background: linear-gradient(90deg, #ff8efb, #2af598);
+      font-size: 2.4em;
+      background: linear-gradient(to right, #00bcd4, #e91e63);
       -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 35px;
+      color: transparent;
       text-align: center;
+      margin-bottom: 25px;
     }
-
-    #avatar {
-      display: block;
-      margin: 0 auto 25px;
-      border-radius: 50%;
-      width: 100px;
-      box-shadow: 0 8px 20px rgba(255,140,233,0.5);
-      animation: floatUpDown 4s ease-in-out infinite;
-    }
-
-    @keyframes floatUpDown {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-12px); }
-    }
-
-    h2 {
-      font-weight: 600;
-      font-size: 1.6rem;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #444;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
     textarea {
-      resize: none;
-      height: 130px;
-      border-radius: 18px;
-      border: 2px solid #d0c4fc;
-      font-size: 1.1rem;
-      padding: 15px 20px;
-      font-family: 'Poppins', sans-serif;
-      transition: border-color 0.3s ease;
+      width: 100%;
+      height: 120px;
+      font-size: 16px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid #ccc;
+      margin-top: 8px;
+      resize: vertical;
+      font-family: inherit;
     }
-
-    textarea:focus {
-      outline: none;
-      border-color: #9a80f9;
-      box-shadow: 0 0 8px #c9bfff;
+    label {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 18px;
+      display: block;
     }
-
-    label.toggle {
-      display: flex;
-      align-items: center;
-      font-size: 1.1rem;
-      color: #666;
-      gap: 12px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    input[type="checkbox"] {
-      width: 22px;
-      height: 22px;
-      accent-color: #ab6cff;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
     .button {
-      background: linear-gradient(135deg, #a275e6, #f88ffb);
-      color: white;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
       border: none;
-      border-radius: 30px;
-      padding: 18px 0;
-      font-size: 1.5rem;
-      font-weight: 700;
+      color: white;
+      padding: 18px 32px;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: 14px;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(161, 117, 230, 0.65);
-      transition: all 0.3s ease;
+      width: 100%;
+      margin-top: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      user-select: none;
+      transition: all 0.3s ease;
     }
     .button:hover {
-      filter: brightness(1.1);
-      box-shadow: 0 12px 28px rgba(161, 117, 230, 0.9);
-      transform: translateY(-3px);
+      transform: scale(1.03);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.12);
     }
-
-    .logout-btn {
-      background: linear-gradient(135deg, #ff758c, #ff7eb3);
-      box-shadow: 0 8px 20px rgba(255, 117, 132, 0.7);
-    }
-
-    a.button {
-      text-decoration: none;
-    }
-
-    /* Icon container */
-    .icon {
-      width: 26px;
-      height: 26px;
+    .button svg {
+      width: 22px;
+      height: 22px;
+      margin-right: 10px;
       fill: white;
-      flex-shrink: 0;
-      filter: drop-shadow(0 0 1px rgba(0,0,0,0.15));
     }
-
-    /* Responsive */
-    @media (max-width: 500px) {
-      h1 { font-size: 2rem; }
-      h2 { font-size: 1.3rem; }
-      textarea { font-size: 1rem; }
-      .button {
-        font-size: 1.3rem;
-        padding: 15px 0;
-      }
+    .logout-button {
+      background: linear-gradient(90deg, #ff5f6d, #ffc371);
+    }
+    #avatar {
+      border-radius: 50%;
+      width: 90px;
+      margin: 15px auto;
+      display: block;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .toggle {
+      display: flex;
+      align-items: center;
+      margin-top: 14px;
+    }
+    .toggle input {
+      margin-right: 10px;
+      transform: scale(1.3);
+    }
+    #userInfo {
+      text-align: center;
+      transition: opacity 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Soft Feedback</h1>
-
     {% if not session.get('user') %}
-      <a href="{{ login_url }}" class="button">
-        <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4C2.9 2 2 2.9 2 4v16a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Zm-9.06 14.24c-1.12 0-2.03-.8-2.03-1.78h4.1c0 1-.9 1.78-2.07 1.78Zm5.14-3.25v2.03a4.78 4.78 0 0 1-1.42.14c-1.08 0-1.9-.52-2.48-1.02l-.06-.05-1.12 1.4c.36.3 1.23.92 2.86.92a6.34 6.34 0 0 0 3.67-1.11v-2.3c.18-.08.36-.17.52-.26a4.4 4.4 0 0 0 1.35-1.1 4.74 4.74 0 0 1-4.85-1.85Zm3.64 2.12a6.4 6.4 0 0 1-3.41 1.33 7.3 7.3 0 0 1-2.08.01c-1.22-.17-1.99-.8-2.15-1.06-.16-.25-.17-.45-.17-.45v-.16h.13c.13-.02.3-.06.47-.11a3.3 3.3 0 0 0 2.8-1.18l1.55 1.98a2.96 2.96 0 0 1-.14 1.04Zm-3.25-4.55v-2.25h.42c.44 0 .83.17 1.07.39.21.18.36.41.36.41l-1.85 1.45Zm-3.55-2.68-1.34 1.08a2.07 2.07 0 0 0-.69-1.1 4.27 4.27 0 0 0 2.03-.38Zm-6.44 4.93V6.91h8.64v6.55Z"/></svg>
-        Connect to Discord
+      <a href="{{ login_url }}">
+        <button class="button">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm.5 15h-1v-6h1v6zm0-8h-1V7h1v2z"/></svg>
+          Connect to Discord
+        </button>
       </a>
     {% else %}
-      <img id="avatar" src="{{ session['user']['avatar'] }}" alt="avatar" />
-      <h2>Hello, {{ session['user']['username'] }}#{{ session['user']['discriminator'] }}</h2>
-
+      <div id="userInfo">
+        <img id="avatar" src="{{ session['user']['avatar'] }}" alt="avatar">
+        <h2>{{ session['user']['username'] }}#{{ session['user']['discriminator'] }}</h2>
+      </div>
       <form method="POST" action="/submit">
-        <label for="feedback" aria-label="Feedback input">Your Feedback</label>
-        <textarea id="feedback" name="feedback" placeholder="Write something kind and honest..." required></textarea>
+        <label for="feedback">
+          Feedback:
+        </label>
+        <textarea name="feedback" id="feedback" required placeholder="Write something nice..."></textarea>
 
-        <label class="toggle" for="anonymous">
-          <input type="checkbox" id="anonymous" name="anonymous" />
-          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/></svg>
-          Submit anonymously
+        <label class="toggle">
+          <input type="checkbox" name="anonymous" id="anonCheck"> Submit anonymously
         </label>
 
         <button class="button" type="submit">
-          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M2 12l18-12v24z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
           Send Feedback
         </button>
       </form>
-
-      <form method="POST" action="/logout" style="margin-top:20px;">
-        <button class="button logout-btn" type="submit">
-          <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 13v-2H7v2h9zm2-7v14H5V6h13z"/></svg>
+      <form method="POST" action="/logout">
+        <button class="button logout-button" type="submit">
+          <svg viewBox="0 0 24 24"><path d="M16 13v-2H7V8l-5 4 5 4v-3h9zm4-9H4c-1.1 0-2 .9-2 2v6h2V6h16v12H4v-4H2v6c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/></svg>
           Logout
         </button>
       </form>
     {% endif %}
   </div>
+
+  <script>
+    const anonCheckbox = document.getElementById('anonCheck');
+    const userInfo = document.getElementById('userInfo');
+
+    if (anonCheckbox) {
+      anonCheckbox.addEventListener('change', function () {
+        userInfo.style.display = this.checked ? 'none' : 'block';
+      });
+    }
+  </script>
 </body>
 </html>
 """
